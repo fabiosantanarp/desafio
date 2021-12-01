@@ -102,7 +102,7 @@ class TransactionService extends Service {
                         $this->__notifyByEmail($notificationData, $template);
                         break;
 
-                    // ... others methods
+                    // ... others notification methods
                 }
                 
             }
@@ -111,8 +111,17 @@ class TransactionService extends Service {
 
     }
 
+    /**
+    * Generic method for notification by Email and template.
+    * A template identifies what type of message (template view) will be called to send message.
+    * @param Array   $notificationData  Data Notification.
+    * @param String   $template  Specific template for sending mail.
+    * @author Fábio Sant'Ana <fabio@4comtec.com.br>
+    * 
+    */     
     private function __notifyByEmail(array $notificationData, string $template) {
 
+        // Store a mail message in a queue.
         Mail::queue(new SendMailUser($notificationData, $template));
 
     }

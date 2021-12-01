@@ -25,6 +25,14 @@ class MyException extends Exception {
         
     }
 
+    /**
+     * Render a message depending on exception type given.
+     * Use a structured message response based on App\Response\ApiMessageResponse;
+     * @param  \Illuminate\Http\Request  $request
+     * @author Fábio Sant'Ana <fabio@4comtec.com.br>
+     * @return Response
+     * 
+    */
     public function render($request) {
 
             switch (get_class($this->exception)) {

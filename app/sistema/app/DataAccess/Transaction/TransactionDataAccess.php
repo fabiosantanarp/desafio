@@ -125,16 +125,25 @@ class TransactionDataAccess extends DataAccess {
                 throw new MyBusinessException("Operação não permitida");
             };            
 
-            //create debit operation.
+            //create debit operation to payer.
             $this->__newOperation($idUserPayer, $idNewTransaction, 'debit', $operationValue);
 
-            //create credit operation.        
+            //create credit operation to payee.        
             $this->__newOperation($idUserPayee, $idNewTransaction, 'credit', $operationValue); 
         
         \DB::commit();
 
     }
 
+    /**
+     * Create a transaction. A transaction is a kind of log of transfers. 
+     * It can be used for identify payer, payee, date and time of transaction.
+     * @param Int $idUserPayer  Paying user id .  
+     * @param Int $idUserPayee  Paid user id. 
+     * @author Fábio Sant'Ana <fabio@4comtec.com.br>
+     * @return MyException Throw Exception if any verification is breaked.
+     * 
+    */ 
     private function __newTransaction(int $idUserPayer, $idUserPayee) {
         $newTransactionObj = new $this->model;
         $newTransactionObj->idUserPayer = $idUserPayer;
@@ -144,6 +153,17 @@ class TransactionDataAccess extends DataAccess {
         return $newTransactionObj->idTransaction;
     }
 
+    /**
+     * Create a operation. A operation can be, normally, debit or credit.      
+     * @param Int $idUser  User id .  
+     * @param Int $idTransaction  Transactio id previusly created. 
+     * @param String $operationType  credit or debit. 
+     * @param Float $operationValue Total Value of operation.
+     * @author Fábio Sant'Ana <fabio@4comtec.com.br>
+     * @return MyException Throw Exception if any verification is breaked.
+     * @return idOperation Operation id.
+     * 
+    */ 
     private function __newOperation(int $idUser, int $idTransaction, string $operationType, $operationValue) {
         $newOperationObj = new $this->operationmodel;
         $newOperationObj->idUser = $idUser;
@@ -152,8 +172,14 @@ class TransactionDataAccess extends DataAccess {
         $newOperationObj->operationValue = $operationValue;
         $newOperationObj->save();
         return $newOperationObj->idOperation;
-    }    
+    } 
 
+    /**
+     * Basically request a external authorization server for authorize transaction.
+     * @author Fábio Sant'Ana <fabio@4comtec.com.br>
+     * @return true|false depends on response.     
+     * 
+    */ 
     private function __checkAuthorization() {
 
          // check simulation external authorization.

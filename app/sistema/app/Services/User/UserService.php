@@ -85,6 +85,7 @@ class UserService extends Service {
 
         }
         
+        // determine specific rule for validation data
         $rules = [
             'typeUser' => 'required|string',
             'email' => 'required|email',
@@ -94,10 +95,13 @@ class UserService extends Service {
             'lastName' => 'required|string'
         ];
 
+        // call validator method, passing data and rules.
         $this->validator->validate($data, $rules); //Validator
 
+        // insert
         $userId = $this->dataaccess->addUser($data); // Insert
 
+        // insert new user userId to the data pre-existent.
         $data["userId"] = $userId;
 
         return $data;
@@ -112,8 +116,10 @@ class UserService extends Service {
     */ 
     private function __storeCompany(array $data) {
 
+        // Required fields.
         $requiredFields = ['typeUser', 'email', 'password', 'cnpj', 'corporateName'];
-
+        
+        //Check required fields in data.
         $notFoundFields = $this->hasInArray($requiredFields, $data);
 
         if (count($notFoundFields) > 0) {              
@@ -122,6 +128,7 @@ class UserService extends Service {
 
         }
       
+        // determine specific rule for validation data
         $rules = [
             'typeUser' => 'required|string',
             'email' => 'required|email',
@@ -130,10 +137,13 @@ class UserService extends Service {
             'corporateName'=> 'required|string',
         ];
 
+        // call validator method, passing data and rules.
         $this->validator->validate($data, $rules); //Validator
 
+        // insert
         $userId = $this->dataaccess->addUser($data); // Insert
 
+        // insert new user userId to the data pre-existent.
         $data["userId"] = $userId;
 
         return $data;

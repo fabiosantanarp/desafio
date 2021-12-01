@@ -40,6 +40,7 @@ class UserDataAccess extends DataAccess {
         //get all operation for user.
         $allUserOperation = $operationModelObj::where("idUser", $idUser)->get();
 
+        // if no transfers were found, credit set to 0
         if (count($allUserOperation) == 0) return 0;
 
         // loop all operation and credit or debit to the totalBalance variable.
