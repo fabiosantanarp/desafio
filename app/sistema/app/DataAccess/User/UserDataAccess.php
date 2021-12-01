@@ -103,13 +103,15 @@ class UserDataAccess extends DataAccess {
                     $this->personmodel->cpf = $data["cpf"];
                     $this->personmodel->firstName = $data["firstName"];
                     $this->personmodel->lastName = $data["lastName"];
-                    $this->personmodel->save();
+                    $this->personmodel->save();                    
                 }
 
             } else {
                 \DB::rollback();
                 throw new MyBusinessException("Usuario já existe");
             }
+
+            return $this->model->idUser;
 
         \DB::commit();
 

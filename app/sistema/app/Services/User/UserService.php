@@ -51,11 +51,11 @@ class UserService extends Service {
 
         if ($data["typeUser"] == "person") {
 
-            $this->__storePerson($data);
+            return  $this->__storePerson($data);
 
         } else if ($data["typeUser"] == "company"){
 
-            $this->__storeCompany($data);
+            return $this->__storeCompany($data);
 
         } else {
 
@@ -96,7 +96,11 @@ class UserService extends Service {
 
         $this->validator->validate($data, $rules); //Validator
 
-        $this->dataaccess->addUser($data); // Insert
+        $userId = $this->dataaccess->addUser($data); // Insert
+
+        $data["userId"] = $userId;
+
+        return $data;
 
     }
 
@@ -128,7 +132,11 @@ class UserService extends Service {
 
         $this->validator->validate($data, $rules); //Validator
 
-        $this->dataaccess->addUser($data); // Insert
+        $userId = $this->dataaccess->addUser($data); // Insert
+
+        $data["userId"] = $userId;
+
+        return $data;
 
     }
 

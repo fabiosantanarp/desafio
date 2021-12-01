@@ -32,9 +32,9 @@ class UserController extends Controller
 
             $input = sanitizeData($request->all()); 
             
-            $this->service->store($input);
+            $newUserInfo = $this->service->store($input);
 
-            $messageResponse = json_encode(new ApiMessageResponse(true, EnumMessageResponseType::Success, "Cadastrado com sucesso", $input, null));
+            $messageResponse = json_encode(new ApiMessageResponse(true, EnumMessageResponseType::Success, "Cadastrado com sucesso", $newUserInfo, null));
 
             return response($messageResponse, 200);
 
