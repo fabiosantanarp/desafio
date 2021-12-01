@@ -112,9 +112,10 @@ class UserDataAccess extends DataAccess {
                 throw new MyBusinessException("Usuario já existe");
             }
 
-            return $this->model->idUser;
 
         \DB::commit();
+
+        return $this->model->idUser;
 
     }
 
