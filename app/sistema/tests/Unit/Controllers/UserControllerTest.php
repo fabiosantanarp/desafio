@@ -19,7 +19,12 @@ class UserTest extends TestCase {
             "cpf"       => rand(000,999).".776.518-99"
         ]);                    
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertJson([
+                "success" => true,
+                "type" => "Success",
+                "text" => "Cadastrado com sucesso"
+            ]);;
 
     }  
 
@@ -32,11 +37,16 @@ class UserTest extends TestCase {
             "typeUser"      => "company",
             "email"         => $randomString."@testcompany.com",
             "password"      => $randomString,
-            "cnpj"          => "00.000.123/0001-00",
+            "cnpj"          => "13.123.112/".rand(0000,9999)."-88",
             "corporateName" => "Company ".$randomString,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+        ->assertJson([
+            "success" => true,
+            "type" => "Success",
+            "text" => "Cadastrado com sucesso"
+        ]);;
 
     }    
 
@@ -49,10 +59,16 @@ class UserTest extends TestCase {
             "email"     => $randomString."@testuser.com",
             "password"  => $randomString ,
             "firstName" => $randomString,
-            "lastName"  => $randomString,            
+            "lastName"  => $randomString            
         ]);
 
-        $response->assertStatus(500);
+        $response->assertStatus(500)
+        ->assertJson([
+            "success" => false,
+            "type" => "Error",
+            "text" => "Dados nao encontrados (cpf). Verifique a documentacao."
+        ]);
+
     }
 
     public function test_create_company_without_cnpj()
@@ -66,35 +82,48 @@ class UserTest extends TestCase {
             "corporateName" => "Company ".$randomString,           
         ]);
 
-        $response->assertStatus(500);
-    }   
-    
-    public function test_create_company_duplicated()
-    {
-        $randomString = Str::random(5);
-        $response1 = $this->post('/api/user/add',
-        [
-            "typeUser"      => "company",
-            "email"         => $randomString."@testcompany.com",
-            "password"      => $randomString,
-            "corporateName" => "Company ".$randomString,           
+        $response->assertStatus(500)
+        ->assertJson([
+            "success" => false,
+            "type" => "Error",
+            "text" => "Dados nao encontrados (cnpj). Verifique a documentacao."
         ]);
 
-        $response2 = $this->post('/api/user/add',
+    }   
+    
+    public function test_create_company_already_created()
+    {
+        $randomString = Str::random(5);
+        $responseCreateFirstUser = $this->post('/api/user/add',
         [
             "typeUser"      => "company",
             "email"         => $randomString."@testcompany.com",
             "password"      => $randomString,
-            "corporateName" => "Company ".$randomString,           
+            "corporateName" => "Company ".$randomString,   
+            "cnpj"          => "13.123.112/".rand(0000,9999)."-88"        
+        ]);
+
+        $responseCreateSecondUser = $this->post('/api/user/add',
+        [
+            "typeUser"      => "company",
+            "email"         => $randomString."@testcompany.com",
+            "password"      => $randomString,
+            "corporateName" => "Company ".$randomString,
+            "cnpj"          => "13.123.112/".rand(0000,9999)."-88"           
         ]);        
 
-        $response2->assertStatus(500);
+        $responseCreateSecondUser->assertStatus(500)
+        ->assertJson([
+            "success" => false,
+            "type" => "Error",
+            "text" => "Usuario já existe"
+        ]);
     }  
     
     public function test_create_user_person_duplicated()
     {
         $randomString = Str::random(5);
-        $response1 = $this->post('/api/user/add',
+        $responseCreateFirstUser = $this->post('/api/user/add',
         [
             "typeUser"  => "person",
             "email"     => $randomString."@testuser.com",
@@ -104,7 +133,7 @@ class UserTest extends TestCase {
             "cpf"       => "228.776.518-99"
         ]);   
         
-        $response2 = $this->post('/api/user/add',
+        $responseCreateSecondUser = $this->post('/api/user/add',
         [
             "typeUser"  => "person",
             "email"     => $randomString."@testuser.com",
@@ -114,8 +143,12 @@ class UserTest extends TestCase {
             "cpf"       => "228.776.518-99"
         ]);         
 
-        $response2->assertStatus(500);
-
+        $responseCreateSecondUser->assertStatus(500)
+        ->assertJson([
+            "success" => false,
+            "type" => "Error",
+            "text" => "Usuario já existe"
+        ]);
     }  
     
     public function test_create_user_with_strange_type_user()
@@ -126,10 +159,16 @@ class UserTest extends TestCase {
             "typeUser"      => "NOTVALID", //here is the invalid typeuser.
             "email"         => $randomString."@testcompany.com",
             "password"      => $randomString,
-            "corporateName" => "Company ".$randomString,           
+            "corporateName" => "Company ".$randomString,
+            "cnpj"          => "13.123.112/".rand(0000,9999)."-88"           
         ]);       
 
-        $response->assertStatus(500);
+        $response->assertStatus(500)
+        ->assertJson([
+            "success" => false,
+            "type" => "Error",
+            "text" => "Tipo de Usuário (typeUser) inválido"
+        ]);
     }     
 
     public function test_create_company_without_param()
@@ -138,10 +177,13 @@ class UserTest extends TestCase {
         $response = $this->post('/api/user/add',
         [
       
-        ]);
+        ]);        
 
-        $response->assertJson([
-            "success" => false
+        $response->assertStatus(500)
+        ->assertJson([
+            "success" => false,
+            "type" => "Error",
+            "text" => "Ocorreu um erro geral. Por favor, tente novamente"
         ]);
     }
     
@@ -153,26 +195,15 @@ class UserTest extends TestCase {
             "typeUser"      => "company",
             "email"         => "HERE_NOT_A_EMAIL", //here is a invalid email format.
             "password"      => $randomString,
-            "corporateName" => "Company ".$randomString,           
+            "corporateName" => "Company ".$randomString,
+            "cnpj"          => "13.123.112/".rand(0000,9999)."-88"           
         ]);
 
-        $response->assertJson([
-            "success" => false
+        $response->assertStatus(500)
+        ->assertJson([
+            "success" => false,
+            "type" => "Error",
+            "text" => "Ocorreu um erro de validação. Consulte a documentação"
         ]);
     }  
-    
-    // public function test_get_total_balance_of_user()
-    // {
-    //     $response = $this->get('/api/user/getTotalBalance',
-    //     [
-    //         "idUser" => 1,            
-    //     ]);
-
-    //     $response->assertStatus(200);
-
-    // }      
-
-
-    
-    
 }
