@@ -4,7 +4,19 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Support\Str;
 
-class UserTest extends TestCase {       
+class UserTest extends TestCase {     
+    
+    //Return a random field based on type param.
+    private function create_random_fields($type) {
+
+        if ($type == "cpf"){
+            return rand(100,999). "." .rand(100,999). "." .rand(100,999). "-00";
+        } else if  ($type == "cnpj") {
+            return rand(10,99). "." .rand(100,999). "." .rand(100,999). "/0001-00";
+        }else if ($type == "email") {
+            return Str::random(10)."@".Str::random(10).".com.br";
+        }
+    }
 
     public function test_create_user_person()
     {
@@ -16,7 +28,7 @@ class UserTest extends TestCase {
             "password"  => $randomString ,
             "firstName" => $randomString,
             "lastName"  => $randomString,
-            "cpf"       => rand(000,999).".776.518-99"
+            "cpf"       => $this->create_random_fields("cpf")
         ]);                    
 
         $response->assertStatus(200)
@@ -37,7 +49,7 @@ class UserTest extends TestCase {
             "typeUser"      => "company",
             "email"         => $randomString."@testcompany.com",
             "password"      => $randomString,
-            "cnpj"          => "13.123.112/".rand(0000,9999)."-88",
+            "cnpj"          => $this->create_random_fields("cnpj"),
             "corporateName" => "Company ".$randomString,
         ]);
 
@@ -97,11 +109,11 @@ class UserTest extends TestCase {
 
         $userTemplate =  [
             "typeUser"      => "company",
-            "email"         => $randomString."@testcompany.com",
+            "email"         => $this->create_random_fields("email"),
             "password"      => $randomString,
             "corporateName" => "Company ".$randomString,   
-            "cnpj"          => "13.123.112/".rand(0000,9999)."-88"        
-        ];
+            "cnpj"          =>  $this->create_random_fields("cnpj")                  
+        ];        
 
         $responseCreateFirstUser = $this->post('/api/user/add', $userTemplate);
 
@@ -115,7 +127,34 @@ class UserTest extends TestCase {
         ]);
     }  
     
-    public function test_create_user_person_duplicated()
+    public function test_create_user_person_with_duplicated_cpf()
+    {
+        $randomString = Str::random(5);
+
+        $cpfExample =  $this->create_random_fields("cpf");
+
+        $userTemplate = [
+            "typeUser"  => "person",
+            "email"     => $randomString."@testuser.com",
+            "password"  => $randomString ,
+            "firstName" => $randomString,
+            "lastName"  => $randomString,
+            "cpf"       => $cpfExample
+        ];
+
+        $responseCreateFirstUser = $this->post('/api/user/add', $userTemplate);   
+        
+        $responseCreateSecondUser = $this->post('/api/user/add',$userTemplate);
+
+        $responseCreateSecondUser->assertStatus(500)
+        ->assertJson([
+            "success" => false,
+            "type" => "Error",
+            "text" => "Usuario já existe"
+        ]);
+    }  
+
+    public function test_create_user_person_with_duplicated_email()
     {
         $randomString = Str::random(5);
 
@@ -125,7 +164,7 @@ class UserTest extends TestCase {
             "password"  => $randomString ,
             "firstName" => $randomString,
             "lastName"  => $randomString,
-            "cpf"       => "228.776.518-99"
+            "cpf"       => $this->create_random_fields("cpf")
         ];
 
         $responseCreateFirstUser = $this->post('/api/user/add', $userTemplate);   
@@ -149,7 +188,7 @@ class UserTest extends TestCase {
             "email"         => $randomString."@testcompany.com",
             "password"      => $randomString,
             "corporateName" => "Company ".$randomString,
-            "cnpj"          => "13.123.112/".rand(0000,9999)."-88"           
+            "cnpj"          => $this->create_random_fields("cnpj")
         ]);       
 
         $response->assertStatus(500)
@@ -185,7 +224,7 @@ class UserTest extends TestCase {
             "email"         => "HERE_NOT_A_EMAIL", //here is a invalid email format.
             "password"      => $randomString,
             "corporateName" => "Company ".$randomString,
-            "cnpj"          => "13.123.112/".rand(0000,9999)."-88"           
+            "cnpj"          => $this->create_random_fields("cnpj")
         ]);
 
         $response->assertStatus(500)
