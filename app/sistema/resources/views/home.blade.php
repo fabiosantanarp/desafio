@@ -56,8 +56,8 @@
             <div class="list">
 
                 <li class="list-item"><a href="https://github.com/fabiosantanarp/desafio" target="_blank"> Escopo do Projeto</li></a>
-                <li class="list-item"><a href="https://github.com/fabiosantanarp/desafio/blob/main/analise-requisitos-proposta-tecnica.pdf">Análise de Requisitos e Proposta Técnica</a></li>
-                <li class="list-item"><a href="https://github.com/fabiosantanarp/desafio/blob/main/database-description.pdf">Documentação do Banco de Dados</a></li>
+                <li class="list-item"><a href="https://github.com/fabiosantanarp/desafio/blob/master/analise-requisitos-proposta-tecnica.pdf">Análise de Requisitos e Proposta Técnica</a></li>
+                <li class="list-item"><a href="https://github.com/fabiosantanarp/desafio/blob/master/database-description.pdf">Documentação do Banco de Dados</a></li>
                 <li class="list-item"><a href="https://documenter.getpostman.com/view/13833204/UVJcnH87" target="_blank">Documentação da API</a></li>
                 
             </div>
