@@ -94,23 +94,18 @@ class UserTest extends TestCase {
     public function test_create_company_already_created()
     {
         $randomString = Str::random(5);
-        $responseCreateFirstUser = $this->post('/api/user/add',
-        [
+
+        $userTemplate =  [
             "typeUser"      => "company",
             "email"         => $randomString."@testcompany.com",
             "password"      => $randomString,
             "corporateName" => "Company ".$randomString,   
             "cnpj"          => "13.123.112/".rand(0000,9999)."-88"        
-        ]);
+        ];
 
-        $responseCreateSecondUser = $this->post('/api/user/add',
-        [
-            "typeUser"      => "company",
-            "email"         => $randomString."@testcompany.com",
-            "password"      => $randomString,
-            "corporateName" => "Company ".$randomString,
-            "cnpj"          => "13.123.112/".rand(0000,9999)."-88"           
-        ]);        
+        $responseCreateFirstUser = $this->post('/api/user/add', $userTemplate);
+
+        $responseCreateSecondUser = $this->post('/api/user/add', $userTemplate);
 
         $responseCreateSecondUser->assertStatus(500)
         ->assertJson([
