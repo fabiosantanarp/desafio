@@ -74,7 +74,7 @@ class TransactionTest extends TestCase {
         return $createUserResponse;        
     }
     
-    public function test_company_matrix_transfer_user() {
+    public function test_company_matrix_can_transfer_user() {
 
         $idNewPerson  = $this->create_user_person()["data"]["userId"];
 
@@ -94,7 +94,7 @@ class TransactionTest extends TestCase {
 
     } 
 
-    public function test_company_not_matrix_transfer_user() {
+    public function test_company_not_matrix_can_not_transfer_user() {
 
         //Create new company
         $idNewCompany  = $this->create_user_company()["data"]["userId"];
@@ -115,7 +115,7 @@ class TransactionTest extends TestCase {
 
     }    
 
-    public function test_transfer_person_to_company() {
+    public function test_person_can_transfer_to_company() {
 
         //Create new company
         $idNewCompany  = $this->create_user_company()["data"]["userId"];
@@ -138,7 +138,7 @@ class TransactionTest extends TestCase {
 
     }    
 
-    public function test_transfer_to_myself() {
+    public function test_user_can_not_transfer_to_himself() {
 
         $idNewPerson  = $this->create_user_person()["data"]["userId"];
 
@@ -158,7 +158,7 @@ class TransactionTest extends TestCase {
 
     }   
     
-    public function test_transfer_user_to_user_no_credit() {
+    public function test_user_no_credit_can_not_transfer() {
 
         //create a user with no credit.
         $idNewPerson  = $this->create_user_person(false)["data"]["userId"];

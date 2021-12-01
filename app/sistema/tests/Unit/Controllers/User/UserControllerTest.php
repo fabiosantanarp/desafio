@@ -62,7 +62,7 @@ class UserTest extends TestCase {
 
     }    
 
-    public function test_create_person_without_cpf()
+    public function test_can_not_create_person_without_cpf()
     {
         $randomString = Str::random(5);
         $response = $this->post('/api/user/add',
@@ -83,7 +83,7 @@ class UserTest extends TestCase {
 
     }
 
-    public function test_create_company_without_cnpj()
+    public function test_can_not_create_company_without_cnpj()
     {
         $randomString = Str::random(5);
         $response = $this->post('/api/user/add',
@@ -103,7 +103,7 @@ class UserTest extends TestCase {
 
     }   
     
-    public function test_create_company_already_created()
+    public function test_can_not_create_company_already_created()
     {
         $randomString = Str::random(5);
 
@@ -127,7 +127,7 @@ class UserTest extends TestCase {
         ]);
     }  
     
-    public function test_create_user_person_with_duplicated_cpf()
+    public function test_can_not_create_user_person_with_duplicated_cpf()
     {
         $randomString = Str::random(5);
 
@@ -154,7 +154,7 @@ class UserTest extends TestCase {
         ]);
     }  
 
-    public function test_create_user_person_with_duplicated_email()
+    public function test_can_not_create_user_person_with_duplicated_email()
     {
         $randomString = Str::random(5);
 
@@ -179,7 +179,7 @@ class UserTest extends TestCase {
         ]);
     }  
     
-    public function test_create_user_with_strange_type_user()
+    public function test_can_not__create_user_with_strange_type_user()
     {
         $randomString = Str::random(5);
         $response = $this->post('/api/user/add',
@@ -199,7 +199,7 @@ class UserTest extends TestCase {
         ]);
     }     
 
-    public function test_create_company_without_param()
+    public function test_can_not_create_user_without_param()
     {
         $randomString = Str::random(5);
         $response = $this->post('/api/user/add',
@@ -215,7 +215,7 @@ class UserTest extends TestCase {
         ]);
     }
     
-    public function test_create_company_with_validation_error()
+    public function test_can_not_create_company_with_validation_error()
     {
         $randomString = Str::random(5);
         $response = $this->post('/api/user/add',
