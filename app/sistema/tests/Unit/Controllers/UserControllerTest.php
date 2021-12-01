@@ -118,25 +118,19 @@ class UserTest extends TestCase {
     public function test_create_user_person_duplicated()
     {
         $randomString = Str::random(5);
-        $responseCreateFirstUser = $this->post('/api/user/add',
-        [
+
+        $userTemplate = [
             "typeUser"  => "person",
             "email"     => $randomString."@testuser.com",
             "password"  => $randomString ,
             "firstName" => $randomString,
             "lastName"  => $randomString,
             "cpf"       => "228.776.518-99"
-        ]);   
+        ];
+
+        $responseCreateFirstUser = $this->post('/api/user/add', $userTemplate);   
         
-        $responseCreateSecondUser = $this->post('/api/user/add',
-        [
-            "typeUser"  => "person",
-            "email"     => $randomString."@testuser.com",
-            "password"  => $randomString ,
-            "firstName" => $randomString,
-            "lastName"  => $randomString,
-            "cpf"       => "228.776.518-99"
-        ]);         
+        $responseCreateSecondUser = $this->post('/api/user/add',$userTemplate);
 
         $responseCreateSecondUser->assertStatus(500)
         ->assertJson([
