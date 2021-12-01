@@ -2,6 +2,12 @@
 
 namespace App\Response;
 
+/**
+* Response structure for Api.
+* A notification will be structured.
+* @author Fábio Sant'Ana <fabio@4comtec.com.br>
+* 
+*/ 
 class ApiMessageResponse {
     
     public $success;
