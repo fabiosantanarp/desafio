@@ -28,6 +28,7 @@ O projeto utiliza o ferramentário a seguir:
 
  - A Análise de Requisitos pode ser obtida em <a href="analise-requisitos-proposta-tecnica.pdf">analise-requisitos-proposta-tecnica.pdf</a>.
  - A documentação do banco de dados pode ser obtida em <a href="database-description.pdf">database-description.pdf</a>.
+ - Diagrama Casos de Uso pode ser obtido <a href="casos-de-uso.pdf">aqui</a>
  - A documentação da API pode ser obtida <a href="https://documenter.getpostman.com/view/13833204/UVJcnH87" target="_blank">aqui</a>
 
 
