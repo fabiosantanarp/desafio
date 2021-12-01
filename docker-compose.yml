@@ -1,0 +1,27 @@
+version: "3.4"
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: desafio
+    container_name: desafio_pp
+    working_dir: /var/www/html/sistema
+    volumes:
+      - ./app:/var/www/html
+      - ./apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
+    ports:
+      - "8080:8080"
+      - "443:443"
+    networks:
+      - default
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: DGCq!54Lbr*7
+    ports:
+      - "3307:3306"        
+    networks:
+      - default
