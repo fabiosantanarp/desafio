@@ -69,7 +69,7 @@ Após ter clonado o repositório e acessar o diretório ```desafio```, proceda c
     ```
     DB_CONNECTION=mysql
     DB_HOST={IP DO HOST FISICO}
-    DB_PORT=3307
+    DB_PORT=3306
     DB_DATABASE=challenge
     DB_USERNAME=root
     DB_PASSWORD=DGCq!54Lbr*7 (previamente configurada em docker-composer.yml)
