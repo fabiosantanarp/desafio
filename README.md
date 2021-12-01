@@ -106,5 +106,13 @@ Após ter clonado o repositório e acessar o diretório ```desafio```, proceda c
 
     Obs.: Esse comando pode travar o terminal, aguardando disparo de e-mails.
 
+## Realização de Testes (PHPUnit)
+
+- (opcional) Para rodar os testes, execute:
+
+    ```
+    docker-compose exec app bash -c "php artisan test"
+    ```
+    
 
 ## Enjoy!
