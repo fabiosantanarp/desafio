@@ -29,7 +29,7 @@ class MyException extends Exception {
 
             switch (get_class($this->exception)) {
                 case 'App\Exceptions\MyBusinessException'   : $message = $this->exception->getMessage(); break;                
-                case 'App\Exceptions\MyValidationException' : $message = "Ocorreu um erro de validação. Consulte a documentação."; break;   
+                case 'App\Exceptions\MyValidationException' : $message = "Ocorreu um erro de validação. Consulte a documentação"; break;   
                 case 'App\Exceptions\MyException'           : $message = "Ocorreu um erro geral. Por favor, tente novamente"; break;                  
                 case 'ErrorException'                       : $message = "Ocorreu um erro geral. Por favor, tente novamente"; break;
                 case 'Illuminate\Database\QueryException'   : $message = "Ocorreu um erro interno. Por favor, tente novamente"; break;
