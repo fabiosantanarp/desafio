@@ -36,28 +36,14 @@ O projeto utiliza o ferramentário a seguir:
 
 - <a href="https://docs.docker.com/compose/">Docker-Compose</a>
 
-## Incialização do Projeto
+## Configuração do Docker
 
-Após ter clonado o repositório e acessar o diretório ```desafio```, proceda conforme abaixo.
+- Edite o arquivo docker-compose e informe uma senha para o usuário ```root``` através da variável ``` MYSQL_ROOT_PASSWORD ```.
 
-- Inicie o container e também o webserver integrado do Laravel, na porta 8080.
-    ```
-    docker-compose up -d && docker-compose exec app bash -c "php artisan serve --port 8080 --host 0.0.0.0" &
-    ```
-    Aperte ```ENTER``` após a execução do comando.
-    
-- Faz o carregamento das estruturas iniciais do banco de dados.
-
-    ```
-    docker-compose exec -T db sh -c 'exec mysql -uroot -p"DGCq!54Lbr*7"' < dump.sql
-    ```
-
-    Caso retorne uma mensagem de insegurança, não se preocupe. Esse contexto de importação de estrutura inicial é para ambientes de desenvolvimento e não corremos riscos.
--     
     
 ## Configuração de Ambiente (Laravel)
 
-- Adicione as seguintes variáveis ao arquivo ```app/sistemas/.env```. Por padrão, algumas configurações já foram inseridas, verifique.
+- Copie o arquivo ```app/sistemas/.env-example``` para ```app/sistemas/.env``` e edite conforme abaixo.
 
     ```
     EXTERNAL_AUTHORIZATION_MOCK=https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6
@@ -72,11 +58,11 @@ Após ter clonado o repositório e acessar o diretório ```desafio```, proceda c
     DB_PORT=3306
     DB_DATABASE=challenge
     DB_USERNAME=root
-    DB_PASSWORD=DGCq!54Lbr*7 (previamente configurada em docker-composer.yml)
+    DB_PASSWORD= (previamente configurada em docker-composer.yml)
 
     MAIL_MAILER=smtp
-    MAIL_HOST=smtp.mailtrap.io
-    MAIL_PORT=2525
+    MAIL_HOST=smtp.server.com
+    MAIL_PORT=587
     MAIL_USERNAME=username
     MAIL_PASSWORD=password
     MAIL_ENCRYPTION=tls
@@ -88,17 +74,40 @@ Após ter clonado o repositório e acessar o diretório ```desafio```, proceda c
     QUEUE_CONNECTION=database
     ```
 
+
+## Incialização do Projeto
+
+
+Volte até raíz do projeto e execute os seguintes comandos:
+
 - Baixe as dependências do projeto através do comando:
 
     ```
     docker-compose exec app bash -c "composer update"
     ```    
 
-- Agora, devemos rodar as migrations. No console, dentro do diretório ```app/sistemas``` (diretório raíz do Laravel), digite:
+- Agora, devemos rodar as migrations:
 
     ```
     docker-compose exec app bash -c "php artisan migrate:refresh"
     ```
+
+- Inicie o container e também o webserver integrado do Laravel, na porta 8080.
+    ```
+    docker-compose up -d && docker-compose exec app bash -c "php artisan serve --port 8080 --host 0.0.0.0" &
+    ```
+    Aperte ```ENTER``` após a execução do comando.
+    
+- Faz o carregamento das estruturas iniciais do banco de dados.
+
+    ```
+    docker-compose exec -T db sh -c 'exec mysql -uroot -p"DGCq!54Lbr*7"' < dump.sql
+    ```
+
+    Caso retorne uma mensagem de insegurança, não se preocupe. Esse contexto de importação de estrutura inicial é para ambientes de desenvolvimento e não corremos riscos.
+
+
+
 
 - (opcional) Caso queira executar as filas de e-mail, utilize:
     ```
