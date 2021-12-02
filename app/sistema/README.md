@@ -33,22 +33,12 @@ O projeto utiliza o ferramentário a seguir:
 
 - <a href="https://docs.docker.com/compose/">Docker-Compose</a>
 
-## Incialização do Projeto
+Após ter clonado o repositório, proceda com as configurações abaixo:
 
-Após ter clonado o repositório e acessar o diretório ```desafio```, proceda conforme abaixo.
+## Configure o arquivo docker-compose.yml
 
-- Inicie o container e também o webserver integrado do Laravel, na porta 8080.
-    ```
-    docker-compose up -d && docker-compose exec app bash -c "php artisan serve --port 8080 --host 0.0.0.0" &
-    ```
-    
-- Faz o carregamento das estruturas iniciais do banco de dados.
+- Configure a variável ```MYSQL_ROOT_PASSWORD``` com uma senha para o usuário root.
 
-    ```
-    docker-compose exec -T db sh -c 'exec mysql -uroot -p"DGCq!54Lbr*7"' < dump.sql
-    ```
--     
-    
 ## Configuração de Ambiente (Laravel)
 
 - Adicione as seguintes variáveis ao arquivo ```app/sistemas/.env```.
@@ -82,7 +72,22 @@ Após ter clonado o repositório e acessar o diretório ```desafio```, proceda c
     QUEUE_CONNECTION=database
     ```
 
-- Agora, basta rodar as migrations. No console, dentro do diretório ```app/sistemas``` (diretório raíz do Laravel), digite:
+## Incialização do Projeto
+
+- Inicie o container e também o webserver integrado do Laravel, na porta 8080.
+    ```
+    docker-compose up -d && docker-compose exec app bash -c "php artisan serve --port 8080 --host 0.0.0.0" &
+    ```
+    
+- Faz o carregamento das estruturas iniciais do banco de dados.
+
+    ```
+    docker-compose exec -T db sh -c 'exec mysql -u{usuário} -p"{senha}"' < dump.sql
+    ```
+
+    Caso este comando retorne alguma mensagem de segurança, não se preocupe. Esse é um procedimento em ambiente de testes.
+
+- Agora, basta rodar as migration:
 
     ```
     docker-compose exec app bash -c "php artisan migrate:refresh"

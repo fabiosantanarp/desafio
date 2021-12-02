@@ -20,8 +20,10 @@ services:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: DGCq!54Lbr*7
+      MYSQL_ROOT_PASSWORD: senha
     ports:
       - "3306:3306"        
     networks:
       - default
+
+
