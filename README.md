@@ -80,11 +80,23 @@ O projeto utiliza o ferramentário a seguir:
 
 Volte até raíz do projeto e execute os seguintes comandos:
 
+- Suba o container Web:
+
+    ```
+    docker-compose up -d 
+    ```
+
 - Baixe as dependências do projeto através do comando:
 
     ```
     docker-compose exec app bash -c "composer update"
-    ```    
+    ```
+
+- Inicie o webserver integrado do Laravel, na porta 8080.
+    ```
+    docker-compose exec app bash -c "php artisan serve --port 8080 --host 0.0.0.0" &
+    ```
+    Aperte ```ENTER``` após a execução do comando.        
 
 - Agora, devemos rodar as migrations:
 
@@ -92,16 +104,12 @@ Volte até raíz do projeto e execute os seguintes comandos:
     docker-compose exec app bash -c "php artisan migrate:refresh"
     ```
 
-- Inicie o container e também o webserver integrado do Laravel, na porta 8080.
-    ```
-    docker-compose up -d && docker-compose exec app bash -c "php artisan serve --port 8080 --host 0.0.0.0" &
-    ```
-    Aperte ```ENTER``` após a execução do comando.
+
     
 - Faz o carregamento das estruturas iniciais do banco de dados.
 
     ```
-    docker-compose exec -T db sh -c 'exec mysql -uroot -p"DGCq!54Lbr*7"' < dump.sql
+    docker-compose exec -T db sh -c 'exec mysql -uroot -p"{SENHA}"' < dump.sql
     ```
 
     Caso retorne uma mensagem de insegurança, não se preocupe. Esse contexto de importação de estrutura inicial é para ambientes de desenvolvimento e não corremos riscos.
