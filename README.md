@@ -43,7 +43,7 @@ O projeto utiliza o ferramentário a seguir:
     
 ## Configuração de Ambiente (Laravel)
 
-- Copie o arquivo ```app/sistemas/.env-example``` para ```app/sistemas/.env``` e edite conforme abaixo.
+- Copie o arquivo ```app/sistema/.env-example``` para ```app/sistema/.env``` e edite conforme abaixo.
 
     ```
     EXTERNAL_AUTHORIZATION_MOCK=https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6
