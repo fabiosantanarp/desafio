@@ -38,7 +38,7 @@ O projeto utiliza o ferramentário a seguir:
 
 ## Configuração do Docker
 
-- Edite o arquivo docker-compose e informe uma senha para o usuário ```root``` através da variável ``` MYSQL_ROOT_PASSWORD ```.
+- Edite o arquivo docker-compose.yml e informe uma senha para o usuário ```root``` através da variável ``` MYSQL_ROOT_PASSWORD ```.
 
     
 ## Configuração de Ambiente (Laravel)
