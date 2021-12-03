@@ -7,7 +7,12 @@ use App\Models\PersonModel;
 
 class UserModel extends Model
 {
-    protected $table = 'User';    
+
+    protected $hidden = [
+        'password',
+    ];
+
+    protected $table = 'User';
 
     public $timestamps = false;
 
@@ -25,6 +30,6 @@ class UserModel extends Model
 
         return $this->hasOne(CompanyModel::class, 'idUser');
 
-    }    
+    }
     
 }
