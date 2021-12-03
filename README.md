@@ -5,11 +5,12 @@ Projeto pessoal, cuja finalidade principal é apresentar uma sugestão de APi pa
 
 ## Funções
 
-- Criação de usuário 
+- Criação de usuário comum.
+- Criação de usuário companhia.
 - Transferências financeiras online entre usuários.
 - Consulta de saldo.
 - Notificação de transação financeira.
-- Por padrão, o sistema criará uma Companhia (Company Teste, com idUser = 1) com o saldo de R$ 1000.00 para testarmos a API.
+- Por padrão, o sistema criará uma Companhia (Company Teste, com idUser = 1) com o saldo de R$ 1000 para testarmos a API.
 
 ## Documentação API
 
@@ -36,14 +37,29 @@ O projeto utiliza o ferramentário a seguir:
 
 - <a href="https://docs.docker.com/compose/">Docker-Compose</a>
 
+## Clone do projeto
+
+```git clone https://github.com/fabiosantanarp/desafio.git```
+
 ## Configuração do Docker
 
-- Edite o arquivo docker-compose.yml e informe uma senha para o usuário ```root``` através da variável ``` MYSQL_ROOT_PASSWORD ```.
+- Abra o diretório ```desafio``` e edite o arquivo docker-compose.yml informando uma senha para o usuário ```root``` através da variável ``` MYSQL_ROOT_PASSWORD ```.
 
+## Crie o ambiente Laravel dentro do container.
+
+- Dentro do diretório ```desafio```, digite os comandos abaixo:
+
+    ```
+    docker-compose up -d
+    docker-compose exec app bash -c "cd .. && composer create-project laravel/laravel new"
+    docker-compose exec app bash -c "cd .. && cp -r sistema/* new"
+    docker-compose exec app bash -c "cd .. && rm -rf sistema && mv new sistema"
+
+    ```
     
-## Configuração de Ambiente (Laravel)
+## Configuração do Variáveis
 
-- Copie o arquivo ```app/sistema/.env-example``` para ```app/sistema/.env``` e edite conforme abaixo.
+- Copie o arquivo ```app/sistema/.env.example``` para ```app/sistema/.env``` e edite conforme abaixo.
 
     ```
     EXTERNAL_AUTHORIZATION_MOCK=https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6
@@ -55,7 +71,7 @@ O projeto utiliza o ferramentário a seguir:
     ```
     DB_CONNECTION=mysql
     DB_HOST={IP DO HOST FISICO}
-    DB_PORT=3306
+    DB_PORT=3306 (previamente configurada em docker-composer.yml)
     DB_DATABASE=challenge
     DB_USERNAME=root
     DB_PASSWORD= (previamente configurada em docker-composer.yml)
@@ -69,28 +85,21 @@ O projeto utiliza o ferramentário a seguir:
     MAIL_FROM_ADDRESS=desafio@teste
     ```
 
-- Altere o mecanismo de filas para database.
+- Altere o mecanismo de filas para database, se não estiver.
     ```
     QUEUE_CONNECTION=database
     ```
 
-
-## Incialização do Projeto
-
-
-Volte até raíz do projeto e execute os seguintes comandos:
-
-- Suba o container Web:
-
+- Crie uma nova encryption key
     ```
-    docker-compose up -d 
+    docker-compose exec app bash -c "php artisan key:generate"
     ```
 
-- Baixe as dependências do projeto através do comando:
 
-    ```
-    docker-compose exec app bash -c "composer update"
-    ```
+## Incialização dos serviços
+
+
+Ainda dentro do diretório ```desafio```, proceda como abaixo:
 
 - Inicie o webserver integrado do Laravel, na porta 8080.
     ```
@@ -98,30 +107,24 @@ Volte até raíz do projeto e execute os seguintes comandos:
     ```
     Aperte ```ENTER``` após a execução do comando.        
 
+- Faz o carregamento das estruturas iniciais do banco de dados com a {SENHA} criada no arquivo docker-compose.yml
+
+    ```
+    docker-compose exec -T db sh -c 'exec mysql -uroot -p{SENHA}' < dump.sql
+    ```
+    Caso retorne uma mensagem de insegurança, não se preocupe. Esse contexto de importação de estrutura inicial é para ambientes de desenvolvimento e não corremos riscos.
+
+
 - Agora, devemos rodar as migrations:
 
     ```
     docker-compose exec app bash -c "php artisan migrate:refresh"
     ```
 
-
-    
-- Faz o carregamento das estruturas iniciais do banco de dados.
-
-    ```
-    docker-compose exec -T db sh -c 'exec mysql -uroot -p"{SENHA}"' < dump.sql
-    ```
-
-    Caso retorne uma mensagem de insegurança, não se preocupe. Esse contexto de importação de estrutura inicial é para ambientes de desenvolvimento e não corremos riscos.
-
-
-
-
 - (opcional) Caso queira executar as filas de e-mail, utilize:
     ```
     docker-compose exec app bash -c "php artisan queue:work"
     ```
-
     Obs.: Esse comando pode travar o terminal, aguardando disparo de e-mails.
 
 ## Realização de Testes (PHPUnit)
@@ -130,7 +133,6 @@ Volte até raíz do projeto e execute os seguintes comandos:
 
     ```
     docker-compose exec app bash -c "php artisan test"
-    ```
-    
+    ```    
 
 ## Enjoy!
