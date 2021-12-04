@@ -1,6 +1,7 @@
 # Desafio
 ## _Autor: Fábio Sousa de Sant'Ana_
 
+
 Projeto pessoal, cuja finalidade principal é apresentar uma sugestão de APi para procedimentos de transferências financeiras simplificada entre usuários. Projeto em Laravel.
 
 ## Funções
@@ -10,7 +11,7 @@ Projeto pessoal, cuja finalidade principal é apresentar uma sugestão de APi pa
 - Transferências financeiras online entre usuários.
 - Consulta de saldo.
 - Notificação de transação financeira.
-- Por padrão, o sistema criará uma Companhia (Company Teste, com idUser = 1) com o saldo de R$ 1000 para testarmos a API.
+- Por padrão, o sistema criará uma Companhia (Company Teste, com idUser = 1) com o saldo de R$ 5000 para testarmos a API.
 
 ## Documentação API
 
@@ -54,6 +55,7 @@ O projeto utiliza o ferramentário a seguir:
     docker-compose exec app bash -c "cd .. && composer create-project laravel/laravel new"
     docker-compose exec app bash -c "cd .. && cp -r sistema/* new"
     docker-compose exec app bash -c "cd .. && rm -rf sistema && mv new sistema"
+    docker-compose exec app bash -c "composer dump-autoload"
 
     ```
     
