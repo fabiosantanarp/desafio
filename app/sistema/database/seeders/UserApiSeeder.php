@@ -15,7 +15,7 @@ class UserApiSeeder extends Seeder
      */
     public function run()
     {
-        // create example user for authentication in API
+        // create example user for authentication in API. This insert is just for development.
         DB::table('userapi')->insert([
             'name' => 'Usuario API',
             'email' => 'autentica@api.com',
