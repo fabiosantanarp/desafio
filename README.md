@@ -57,7 +57,6 @@ O projeto utiliza o ferramentário a seguir:
     docker-compose exec app bash -c "cd .. && rm -rf sistema && mv new sistema"
     docker-compose exec app bash -c "composer dump-autoload"
     docker-compose exec app bash -c "php artisan db:seed --class=UserApiSeeder"
-    docker-compose exec app bash -c "php artisan jwt:secret"
     ```
     
 ## Configuração do Variáveis
@@ -97,7 +96,11 @@ O projeto utiliza o ferramentário a seguir:
     ```
     docker-compose exec app bash -c "php artisan key:generate"
     ```
+- Crie uma nova chave para o JWT responsável pela autenticação da API
 
+    ```
+    docker-compose exec app bash -c "php artisan jwt:secret"
+    ```
 
 ## Incialização dos serviços
 
