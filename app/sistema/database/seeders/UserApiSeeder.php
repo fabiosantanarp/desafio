@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use DB;
+use Hash;
 
 class UserApiSeeder extends Seeder
 {
@@ -13,6 +15,11 @@ class UserApiSeeder extends Seeder
      */
     public function run()
     {
-        //
+        // create example user for authentication in API
+        DB::table('userapi')->insert([
+            'name' => 'Usuario API',
+            'email' => 'autentica@api.com',
+            'password' => Hash::make('123456'),
+        ]);
     }
 }
