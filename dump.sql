@@ -122,7 +122,7 @@ VALUES(1, 1, '2021-11-30 13:02:55');
 
 INSERT INTO Operation
 (idUser, idTransaction, operationType, operationValue)
-VALUES(1, 1, 'credit', 1000.00);
+VALUES(1, 1, 'credit', 5000.00);
 
 
 
