@@ -117,16 +117,16 @@ class TransactionTest extends TestCase {
 
     public function test_person_can_transfer_to_company() {
 
-        //Create new company
-        $idNewCompany  = $this->create_user_company()["data"]["userId"];
-        //Get a person from Model
-        $idPerson  = \App\Models\PersonModel::first();        
-
+        //Create new person
+        $idPerson  = $this->create_user_person(true)["data"]["userId"];
+        //Get a company from Model
+        $idNewCompany  = \App\Models\CompanyModel::first(); 
+       
         $response = $this->post('/api/transaction/add',
         [
-            "idUserPayer"  => $idPerson["idUser"],
-            "idUserPayee"  => $idNewCompany,
-            "operationValue"  => '10.00'
+            "idUserPayer"  => $idPerson,
+            "idUserPayee"  => $idNewCompany["idUser"],
+            "operationValue"  => '1.00'
         ]);  
         
         $response->assertStatus(200)
@@ -136,7 +136,7 @@ class TransactionTest extends TestCase {
             "text" => "Transferência realizada com sucesso"
         ]);
 
-    }    
+    }  
 
     public function test_user_can_not_transfer_to_himself() {
 
