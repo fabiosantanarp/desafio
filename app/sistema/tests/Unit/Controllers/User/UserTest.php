@@ -18,10 +18,23 @@ class UserTest extends TestCase {
         }
     }
 
+    private function getToken()
+    {
+        $token = '';
+        $response = $this->post('/api/auth/login',
+        [
+            "email"     => "autentica@api.com",
+            "password"  => "123456",
+        ]); 
+       
+        return $response;
+    } 
+
     public function test_create_user_person()
     {
         $randomString = Str::random(5);
-        $response = $this->post('/api/user/add',
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])
+        ->post('/api/user/add',
         [
             "typeUser"  => "person",
             "email"     => $randomString."@testuser.com",
@@ -36,7 +49,7 @@ class UserTest extends TestCase {
                 "success" => true,
                 "type" => "Success",
                 "text" => "Cadastrado com sucesso"
-            ]);;
+            ]);
 
     }  
 
@@ -44,7 +57,8 @@ class UserTest extends TestCase {
     {
 
         $randomString = Str::random(5);
-        $response = $this->post('/api/user/add',
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])
+        ->post('/api/user/add',
         [
             "typeUser"      => "company",
             "email"         => $randomString."@testcompany.com",
@@ -65,7 +79,8 @@ class UserTest extends TestCase {
     public function test_can_not_create_person_without_cpf()
     {
         $randomString = Str::random(5);
-        $response = $this->post('/api/user/add',
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])
+        ->post('/api/user/add',
         [
             "typeUser"=> "person",
             "email"     => $randomString."@testuser.com",
@@ -86,7 +101,8 @@ class UserTest extends TestCase {
     public function test_can_not_create_company_without_cnpj()
     {
         $randomString = Str::random(5);
-        $response = $this->post('/api/user/add',
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])
+        ->post('/api/user/add',
         [
             "typeUser"      => "company",
             "email"         => $randomString."@testcompany.com",
@@ -115,9 +131,9 @@ class UserTest extends TestCase {
             "cnpj"          =>  $this->create_random_fields("cnpj")                  
         ];        
 
-        $responseCreateFirstUser = $this->post('/api/user/add', $userTemplate);
+        $responseCreateFirstUser = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/user/add', $userTemplate);
 
-        $responseCreateSecondUser = $this->post('/api/user/add', $userTemplate);
+        $responseCreateSecondUser = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/user/add', $userTemplate);
 
         $responseCreateSecondUser->assertStatus(500)
         ->assertJson([
@@ -142,9 +158,9 @@ class UserTest extends TestCase {
             "cpf"       => $cpfExample
         ];
 
-        $responseCreateFirstUser = $this->post('/api/user/add', $userTemplate);   
+        $responseCreateFirstUser = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/user/add', $userTemplate);   
         
-        $responseCreateSecondUser = $this->post('/api/user/add',$userTemplate);
+        $responseCreateSecondUser = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/user/add',$userTemplate);
 
         $responseCreateSecondUser->assertStatus(500)
         ->assertJson([
@@ -167,9 +183,9 @@ class UserTest extends TestCase {
             "cpf"       => $this->create_random_fields("cpf")
         ];
 
-        $responseCreateFirstUser = $this->post('/api/user/add', $userTemplate);   
+        $responseCreateFirstUser = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/user/add', $userTemplate);   
         
-        $responseCreateSecondUser = $this->post('/api/user/add',$userTemplate);
+        $responseCreateSecondUser = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/user/add',$userTemplate);
 
         $responseCreateSecondUser->assertStatus(500)
         ->assertJson([
@@ -182,7 +198,7 @@ class UserTest extends TestCase {
     public function test_can_not__create_user_with_strange_type_user()
     {
         $randomString = Str::random(5);
-        $response = $this->post('/api/user/add',
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/user/add',
         [
             "typeUser"      => "NOTVALID", //here is the invalid typeuser.
             "email"         => $randomString."@testcompany.com",
@@ -202,7 +218,7 @@ class UserTest extends TestCase {
     public function test_can_not_create_user_without_param()
     {
         $randomString = Str::random(5);
-        $response = $this->post('/api/user/add',
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/user/add',
         [
       
         ]);        
@@ -218,7 +234,7 @@ class UserTest extends TestCase {
     public function test_can_not_create_company_with_validation_error()
     {
         $randomString = Str::random(5);
-        $response = $this->post('/api/user/add',
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/user/add',
         [
             "typeUser"      => "company",
             "email"         => "HERE_NOT_A_EMAIL", //here is a invalid email format.

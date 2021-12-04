@@ -18,11 +18,23 @@ class TransactionTest extends TestCase {
             return rand(10,99). "." .rand(100,999). "." .rand(100,999). "/0001-00";
         }       
     }
+
+    private function getToken()
+    {
+        $token = '';
+        $response = $this->post('/api/auth/login',
+        [
+            "email"     => "autentica@api.com",
+            "password"  => "123456",
+        ]); 
+       
+        return $response;
+    } 
     
     private function create_user_person($giveInitialCredit = true) {
 
         $randomString = Str::random(5);
-        $createUserResponse = $this->post('/api/user/add',
+        $createUserResponse = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/user/add',
         [
             "typeUser"  => "person",
             "email"     => $randomString."@testuser.com",
@@ -50,7 +62,7 @@ class TransactionTest extends TestCase {
     private function create_user_company($giveInitialCredit = true) {
 
         $randomString = Str::random(5);
-        $createUserResponse = $this->post('/api/user/add',
+        $createUserResponse = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/user/add',
         [
             "typeUser"  => "company",
             "email"     => $randomString."@testuser.com",
@@ -62,7 +74,7 @@ class TransactionTest extends TestCase {
         if ($giveInitialCredit == true) {
 
             // transfer credit to company for testing.
-            $trasferToNewUser = $this->post('/api/transaction/add',
+            $trasferToNewUser = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/transaction/add',
             [
                 "idUserPayer"  => 1,
                 "idUserPayee"  => $createUserResponse["data"]["userId"],
@@ -78,7 +90,7 @@ class TransactionTest extends TestCase {
 
         $idNewPerson  = $this->create_user_person()["data"]["userId"];
 
-        $response = $this->post('/api/transaction/add',
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/transaction/add',
         [
             "idUserPayer"  => 1,
             "idUserPayee"  => $idNewPerson,
@@ -101,7 +113,7 @@ class TransactionTest extends TestCase {
         //Get a person from Model
         $idPerson  = \App\Models\PersonModel::first();
 
-        $response = $this->post('/api/transaction/add',
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/transaction/add',
         [
             "idUserPayer"  => $idNewCompany,
             "idUserPayee"  => $idPerson["idUser"],
@@ -122,7 +134,7 @@ class TransactionTest extends TestCase {
         //Get a company from Model
         $idNewCompany  = \App\Models\CompanyModel::first(); 
        
-        $response = $this->post('/api/transaction/add',
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/transaction/add',
         [
             "idUserPayer"  => $idPerson,
             "idUserPayee"  => $idNewCompany["idUser"],
@@ -142,7 +154,7 @@ class TransactionTest extends TestCase {
 
         $idNewPerson  = $this->create_user_person()["data"]["userId"];
 
-        $response = $this->post('/api/transaction/add',
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/transaction/add',
         [
             "idUserPayer"  => $idNewPerson,
             "idUserPayee"  => $idNewPerson,
@@ -166,7 +178,7 @@ class TransactionTest extends TestCase {
         //Get a person from Model
         $idPerson  = \App\Models\PersonModel::first(); 
       
-        $response = $this->post('/api/transaction/add',
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/transaction/add',
         [
             "idUserPayer"  => $idNewPerson,
             "idUserPayee"  => $idPerson["idUser"],
@@ -181,8 +193,5 @@ class TransactionTest extends TestCase {
         ]);        
 
     }   
-    
-   
-    
     
 }

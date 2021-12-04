@@ -56,7 +56,7 @@ O projeto utiliza o ferramentário a seguir:
     docker-compose exec app bash -c "cd .. && cp -r sistema/* new"
     docker-compose exec app bash -c "cd .. && rm -rf sistema && mv new sistema"
     docker-compose exec app bash -c "composer dump-autoload"
-
+    docker-compose exec app bash -c "php artisan db:seed --class=UserApiSeeder"
     ```
     
 ## Configuração do Variáveis

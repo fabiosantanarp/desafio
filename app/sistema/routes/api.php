@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('user/add', 'App\Http\Controllers\User\UserController@store');
-Route::get('user/getTotalBalance', 'App\Http\Controllers\User\UserController@getTotalBalance');
-Route::post('transaction/add', 'App\Http\Controllers\Transaction\TransactionController@store');
+Route::post('auth/login', 'App\Http\Controllers\Api\AuthController@login');
 
+Route::group(['middleware' => ['apiJwt']], function() {
+    Route::post('user/add', 'App\Http\Controllers\User\UserController@store');
+    Route::get('user/getTotalBalance', 'App\Http\Controllers\User\UserController@getTotalBalance');
+    Route::post('transaction/add', 'App\Http\Controllers\Transaction\TransactionController@store');
+});
