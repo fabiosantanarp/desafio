@@ -49,7 +49,7 @@ class ApiTest extends TestCase {
     } 
     
     
-    public function test_call_any_method_without_credentials()
+    public function test_call_any_method_without_token()
     {
         $response = $this->post('/api/user/add',
         [
@@ -64,6 +64,26 @@ class ApiTest extends TestCase {
         $response->assertStatus(200)
             ->assertJson([
                 "status" => "Authorization Token not found"
+            ]);
+
+    } 
+
+    public function test_can_not_get_information_with_incorrect_token()
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . 'INVALID_TOKEN')
+        ->post('/api/user/add',
+        [
+            "typeUser"  => "person",
+            "email"     => $this->create_random_fields("email"),
+            "password"  => "123456" ,
+            "firstName" => "New Any",
+            "lastName"  => "New User",
+            "cpf"       => $this->create_random_fields("cpf")
+        ]);      
+
+        $response->assertStatus(200)
+            ->assertJson([
+                "status" => "Token is Invalid"
             ]);
 
     } 
