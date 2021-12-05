@@ -108,7 +108,7 @@ Ainda dentro do diretório ```desafio```, proceda como abaixo:
 
 - Inicie o webserver integrado do Laravel, na porta 8080.
     ```
-    docker-compose exec app bash -c "php artisan serve --port 8080 --host 0.0.0.0" &
+    docker-compose exec app bash -c "php artisan serve --port 8080 --host 0.0.0.0 &" 
     ```
     Aperte ```ENTER``` após a execução do comando.        
 
