@@ -55,6 +55,7 @@ O projeto utiliza o ferramentário a seguir:
     docker-compose exec app bash -c "cd .. && composer create-project laravel/laravel new"
     docker-compose exec app bash -c "cd .. && cp -r sistema/* new"
     docker-compose exec app bash -c "cd .. && rm -rf sistema && mv new sistema"
+    docker-compose exec app bash -c "composer update"    
     docker-compose exec app bash -c "composer dump-autoload"    
     ```
     
