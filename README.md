@@ -48,7 +48,7 @@ O projeto utiliza o ferramentário a seguir:
 
 ## Crie o ambiente Laravel dentro do container.
 
-- Dentro do diretório ```desafio```, digite os comandos abaixo:
+- Dentro do diretório ```desafio```, digite os comandos:
 
     ```
     docker-compose up -d
