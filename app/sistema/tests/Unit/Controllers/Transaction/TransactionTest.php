@@ -47,7 +47,7 @@ class TransactionTest extends TestCase {
         if ($giveInitialCredit == true) {
 
             // transfer credit to person for testing.
-            $trasferToNewUser = $this->post('/api/transaction/add',
+            $trasferToNewUser = $this->withHeader('Authorization', 'Bearer ' . $this->getToken()["access_token"])->post('/api/transaction/add',
             [
                 "idUserPayer"  => 1,
                 "idUserPayee"  => $createUserResponse["data"]["userId"],
