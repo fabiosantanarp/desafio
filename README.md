@@ -55,8 +55,7 @@ O projeto utiliza o ferramentário a seguir:
     docker-compose exec app bash -c "cd .. && composer create-project laravel/laravel new"
     docker-compose exec app bash -c "cd .. && cp -r sistema/* new"
     docker-compose exec app bash -c "cd .. && rm -rf sistema && mv new sistema"
-    docker-compose exec app bash -c "composer dump-autoload"
-    docker-compose exec app bash -c "php artisan db:seed --class=UserApiSeeder"
+    docker-compose exec app bash -c "composer dump-autoload"    
     ```
     
 ## Configuração do Variáveis
@@ -125,6 +124,12 @@ Ainda dentro do diretório ```desafio```, proceda como abaixo:
 
     ```
     docker-compose exec app bash -c "php artisan migrate:refresh"
+    ```
+
+- E também o Seeder.
+
+    ```
+    docker-compose exec app bash -c "php artisan db:seed --class=UserApiSeeder"
     ```
 
 - (opcional) Caso queira executar as filas de e-mail, utilize:
